@@ -33,9 +33,9 @@ async def play_music_(event):
 
     try:
         song = args[1]
-        if song.startswith("@", "-"):
+        if song.startswith("@" or "-"):
             spli = song.split(" ", 1)
-            chat = await get_user_id(spli[0])
+            chat = int("-100" + str(await get_user_id(spli[0])))
             try:
                 song = spli[1]
             except IndexError:
