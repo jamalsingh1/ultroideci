@@ -53,7 +53,7 @@ async def play_music_(event):
         if not done:
             return
         await xx.reply(
-            "**Now playing:** `{}`\n**Duration:** `{}`\n**Chat:** `{}`\n**Requested by:** `{}`".format(
+            "🎸 **Now playing:** `{}`\n⏰ **Duration:** `{}`\n👥 **Chat:** `{}`\n🙋‍♂ **Requested by:** `{}`".format(
                 song_name, time_formatter(duration * 1000), chat, from_user
             ),
             file=thumb,
