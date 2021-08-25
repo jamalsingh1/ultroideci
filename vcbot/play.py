@@ -38,7 +38,8 @@ async def play_music_(event):
             chat = await get_user_id(spli[0])
             try:
                 song = spli[1]
-            except IndexError: pass
+            except IndexError:
+                pass
     except IndexError:
         if not (reply and reply.media):
             return await eod(
