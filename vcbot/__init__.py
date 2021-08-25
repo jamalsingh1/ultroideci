@@ -59,11 +59,12 @@ async def download(event, query, chat, ts):
 
 async def file_download(event, chat, ts):
     song = f"VCSONG_{chat}_{ts}.raw"
-    t = await event.get_reply_message()
-    dl = await t.download_media()
-    title = t.file.title
-    duration = t.file.duration
-    thumb = await t.download_media(thumb=-1)
+    thumb = None
+    dl = await event.download_media()
+    title = event.file.title
+    duration = event.file.duration
+    if event.document.thumbs:
+        thumb = await event.download_media(thumb=-1)
     await raw_converter(dl, song)
     remove(dl)
     return song, thumb, title, duration
