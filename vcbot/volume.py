@@ -10,14 +10,15 @@ from . import *
 
 @vc_asst("volume")
 async def volume_setter(event):
-    text = event.text.split(" ", 1)
-    try:
-        vol = int(text[1])
-    except (IndexError, ValueError):
-        return await eor(event, "`Please specify a volume from 1 to 200!`")
-    await ultSongs.group_call.set_my_volume(vol)
-    if vol > 200:
-        vol = 200
-    if vol < 1:
-        vol = 1
-    await eor(event, "• Volume Changed to `{}%` •".format(vol))
+    if len(event.text.split()) > 1:
+        vol = event.text.split()[1]
+        if vol.isdigit():
+            await ultSongs.group_call.set_my_volume(int(vol))
+            if int(vol) > 200:
+                vol = 200
+            elif int(vol) < 1:
+                vol = 1
+            return await eor(event, "• Volume Changed to `{}%` •".format(vol))
+    return await eor(event, "`Please specify a volume from 1 to 200!`")
+
+    
