@@ -20,5 +20,3 @@ async def volume_setter(event):
                 vol = 1
             return await eor(event, "• Volume Changed to `{}%` •".format(vol))
     return await eor(event, "`Please specify a volume from 1 to 200!`")
-
-    
