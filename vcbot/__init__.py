@@ -70,8 +70,8 @@ async def file_download(event, song, chat, ts):
 
 async def raw_converter(dl, song):
     out, err = await bash(
-            f"ffmpeg -i '{dl}' -f s16le -ac 2 -ar 48000 -acodec pcm_s16le '{song}'"
-        )
+        f"ffmpeg -i '{dl}' -f s16le -ac 2 -ar 48000 -acodec pcm_s16le '{song}'"
+    )
     if err != "":
         LOGS.info(err)
 
