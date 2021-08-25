@@ -19,7 +19,7 @@ from . import *
 async def play_music_(event):
 
     # TODO - cplay, radio
-
+    song = None
     xx = await eor(event, "`Processing...`")
 
     reply = await event.get_reply_message()
@@ -33,6 +33,12 @@ async def play_music_(event):
 
     try:
         song = args[1]
+        if song.startswith("@", "-"):
+            spli = song.split(" ", 1)
+            chat = await get_user_id(spli[0])
+            try:
+                song = spli[1]
+            except IndexError: pass
     except IndexError:
         if not (reply and reply.media):
             return await eod(
@@ -49,7 +55,7 @@ async def play_music_(event):
 
     if not ultSongs.group_call.is_connected:
         # check if vc_Client is in call
-        done = await vc_joiner(event, event.chat_id)
+        done = await vc_joiner(event, chat)
         if not done:
             return
         await xx.reply(
