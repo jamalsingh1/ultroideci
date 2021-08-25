@@ -17,43 +17,28 @@ from . import *
 
 @vc_asst("play")
 async def play_music_(event):
-
-    # TODO - cplay, radio
-    song = None
     xx = await eor(event, "`Processing...`")
-
-    reply = await event.get_reply_message()
-    args = event.text.split(" ", 1)
-    chat = (
-        event.chat_id
-        if str(event.chat_id).startswith("-100")
-        else int("-100" + str(event.chat_id))
-    )
+    chat = event.chat_id
     from_user = event.sender_id
-
-    try:
-        song = args[1]
-        if song.startswith("@" or "-"):
-            spli = song.split(" ", 1)
-            chat = int("-100" + str(await get_user_id(spli[0])))
-            try:
-                song = spli[1]
-            except IndexError:
-                pass
-    except IndexError:
-        if not (reply and reply.media):
-            return await eod(
-                xx, "Please specify a song name or reply to a audio file !", time=10
-            )
-
+    reply, song = None, None
+    if event.reply_to:
+        reply = await event.get_reply_message()
+    elif len(event.text.split()) > 1:
+        input = event.text.split(maxsplit=1)[1]
+        if input.startswith(("@","-")):
+            chat = int(f"-100{await get_user_id(input)}")
+        else:
+            song = input
+    if not reply and not song:
+        return await eor(
+                xx, "Please specify a song name or reply to a audio file !", time=5
+             )
     await eor(xx, "`Downloading and converting...`")
     TS = datetime.datetime.now().strftime("%H:%M:%S")
-
     if reply and (reply.audio or reply.video or reply.document):
         song, thumb, song_name, duration = await file_download(reply, chat, TS)
     else:
         song, thumb, song_name, duration = await download(event, song, chat, TS)
-
     if not ultSongs.group_call.is_connected:
         # check if vc_Client is in call
         done = await vc_joiner(event, chat)
