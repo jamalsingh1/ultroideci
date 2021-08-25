@@ -16,4 +16,6 @@ async def volume_setter(event):
     except (IndexError, ValueError):
         return await eor(event, "`Please specify a volume from 1 to 200!`")
     await ultSongs.group_call.set_my_volume(vol)
-    await eor(event, "Set volume to {}".format(vol))
+    if vol > 200: vol = 200
+    if vol < 1: vol = 1
+    await eor(event, "• Volume Changed to `{}%` •".format(vol))
