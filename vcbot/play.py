@@ -25,14 +25,14 @@ async def play_music_(event):
         reply = await event.get_reply_message()
     elif len(event.text.split()) > 1:
         input = event.text.split(maxsplit=1)[1]
-        if input.startswith(("@","-")):
+        if input.startswith(("@", "-")):
             chat = int(f"-100{await get_user_id(input)}")
         else:
             song = input
     if not reply and not song:
         return await eor(
-                xx, "Please specify a song name or reply to a audio file !", time=5
-             )
+            xx, "Please specify a song name or reply to a audio file !", time=5
+        )
     await eor(xx, "`Downloading and converting...`")
     TS = datetime.datetime.now().strftime("%H:%M:%S")
     if reply and (reply.audio or reply.video or reply.document):
