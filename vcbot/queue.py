@@ -23,7 +23,7 @@ async def queue(event):
 
     q = list_queue(chat)
 
-    if q == "":
+    if q in ["", None]:
         return await eor(event, "Nothing in queue!")
 
     await eor(event, "**Queue:**\n\n{}".format(q))
