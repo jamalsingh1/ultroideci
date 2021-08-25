@@ -80,7 +80,7 @@ async def raw_converter(dl, song):
 
 def vc_asst(dec):
     def ult(func):
-        pattern = "^/" + dec
+        pattern = "\\" + udB["VC_HNDLR"] if udB.get("VC_HNDLR") else "/"  + dec
         asst.add_event_handler(
             func,
             events.NewMessage(incoming=True, pattern=pattern, from_users=VC_AUTHS()),
