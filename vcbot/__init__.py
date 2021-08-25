@@ -57,20 +57,21 @@ async def download(event, query, chat, ts):
     return song, thumb, title, duration
 
 
-async def file_download(event, song, chat, ts):
+async def file_download(event, chat, ts):
     song = f"VCSONG_{chat}_{ts}.raw"
     t = await event.get_reply_message()
-    dl = await t.download_media(song)
+    dl = await t.download_media()
     title = t.file.title
     duration = t.file.duration
     thumb = await t.download_media(thumb=-1)
     await raw_converter(dl, song)
+    remove(dl)
     return song, thumb, title, duration
 
 
 async def raw_converter(dl, song):
     out, err = await bash(
-        f"ffmpeg -i '{dl}' -f s16le -ac 2 -ar 48000 -acodec pcm_s16le '{song}'"
+        f"ffmpeg -i '{dl}' -f s16le -ac 2 -ar 48000 -acodec pcm_s16le '{song} -y"
     )
     if err != "":
         LOGS.info(err)
