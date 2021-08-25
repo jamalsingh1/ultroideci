@@ -54,10 +54,6 @@ async def download(event, query, chat, ts):
     duration = ytdl_data["duration"]
     thumb = f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg"
     await raw_converter(dl, song)
-    try:
-        remove(dl)
-    except BaseException:
-        pass
     return song, thumb, title, duration
 
 
@@ -69,20 +65,15 @@ async def file_download(event, song, chat, ts):
     duration = t.file.duration
     thumb = await t.download_media(thumb=-1)
     await raw_converter(dl, song)
-    try:
-        remove(dl)
-    except BaseException:
-        pass
     return song, thumb, title, duration
 
 
 async def raw_converter(dl, song):
-    try:
-        await bash(
-            f'ffmpeg -i "{dl}" -f s16le -ac 2 -ar 48000 -acodec pcm_s16le "{song}"'
+    out, err = await bash(
+            f"ffmpeg -i '{dl}' -f s16le -ac 2 -ar 48000 -acodec pcm_s16le '{song}'"
         )
-    except Exception as e:
-        LOGS.warning(e)
+    if err != "":
+        LOGS.info(err)
 
 
 def vc_asst(dec):
